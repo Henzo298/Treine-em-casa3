@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sportsify — Treinos Esportivos</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --accent: #06b6d4;
+      --muted: #94a3b8;
+      --radius: 14px;
+      font-family: "Poppins", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: #fff;
+      min-height: 100vh;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    header {
+      background: linear-gradient(90deg, var(--accent), #3b82f6);
+      padding: 16px 24px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      color: #032;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin: 24px 0;
+      flex-wrap: wrap;
+    }
+
+    .tab {
+      padding: 10px 18px;
+      border-radius: var(--radius);
+      background: var(--card);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .tab:hover {
+      background: var(--accent);
+      color: #032;
+      transform: scale(1.05);
+    }
+
+    .tab.active {
+      background: var(--accent);
+      color: #032;
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.5);
+    }
+
+    .content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      animation: fadeUp 0.7s ease;
+    }
+
+    .exercise {
+      margin-bottom: 20px;
+      padding: 16px;
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      transform: translateY(20px);
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .exercise h3 {
+      margin: 0 0 6px 0;
+      color: var(--accent);
+    }
+
+    .exercise p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      margin: 24px 0;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header>⚽ Sportsify — Treinos Esportivos</header>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="futebol">Futebol</div>
+    <div class="tab" data-tab="volei">Vôlei</div>
+    <div class="tab" data-tab="basquete">Basquete</div>
+    <div class="tab" data-tab="corrida">Corrida</div>
+  </div>
+
+  <div id="content" class="content"></div>
+
+  <footer>© 2025 Sportsify. Aprenda e pratique com estilo!</footer>
+
+  <script>
+    const treinos = {
+      futebol: [
+        {
+          nome: "Treino de Trivela",
+          desc: "Aprenda a chutar com efeito usando a parte externa do pé. Foque no movimento do tornozelo e equilíbrio corporal."
+        },
+        {
+          nome: "Finalização com Precisão",
+          desc: "Coloque cones no gol e tente acertar os cantos. Trabalhe o controle de força e mira."
+        },
+        {
+          nome: "Treino de Passe Rápido",
+          desc: "Com um parceiro, pratique passes curtos e rápidos em um toque só, simulando pressão de jogo."
+        }
+      ],
+      volei: [
+        {
+          nome: "Treino de Saque",
+          desc: "Foque na postura e controle de força. Tente variar entre saque por baixo e flutuante."
+        },
+        {
+          nome: "Exercício de Bloqueio",
+          desc: "Pratique saltos e tempo de bloqueio com um colega, mantendo as mãos sobre a rede."
+        },
+        {
+          nome: "Recepção de Saque",
+          desc: "Use os antebraços para controlar a bola e direcionar ao levantador."
+        }
+      ],
+      basquete: [
+        {
+          nome: "Treino de Arremesso",
+          desc: "Ajuste sua base, mantenha o cotovelo alinhado e pratique arremessos de curta e média distância."
+        },
+        {
+          nome: "Controle de Drible",
+          desc: "Alterne entre mãos, drible baixo e alto, e faça movimentos rápidos de direção."
+        },
+        {
+          nome: "Treino de Defesa",
+          desc: "Posição baixa, braços abertos e passos laterais rápidos para marcar o adversário."
+        }
+      ],
+      corrida: [
+        {
+          nome: "Treino Intervalado",
+          desc: "Corra forte por 30 segundos e trote por 1 minuto. Repita de 6 a 10 vezes."
+        },
+        {
+          nome: "Corrida de Resistência",
+          desc: "Corra 5 a 10 km em ritmo constante. Foque em manter a respiração controlada."
+        },
+        {
+          nome: "Alongamento Pós-Corrida",
+          desc: "Após o treino, alongue as pernas e quadris para evitar lesões."
+        }
+      ]
+    };
+
+    const content = document.getElementById("content");
+    const tabs = document.querySelectorAll(".tab");
+
+    // animação de entrada do site
+    window.onload = () => {
+      document.body.style.opacity = 1;
+      renderTab("futebol");
+    };
+
+    // alterna abas
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        tabs.forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+        renderTab(tab.dataset.tab);
+      });
+    });
+
+    // renderiza conteúdo da aba
+    function renderTab(tabName) {
+      content.innerHTML = "";
+      treinos[tabName].forEach((t, i) => {
+        const div = document.createElement("div");
+        div.className = "exercise";
+        div.style.animationDelay = `${i * 0.15}s`;
+        div.innerHTML = `<h3>${t.nome}</h3><p>${t.desc}</p>`;
+        content.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>
